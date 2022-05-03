@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package battleship.api;
+
+service BattleshipService {
+  rpc Connect (stream Request) returns (stream Reply);
+}
+
+// ------------
+// Core Message
+// ------------
+
+message Point {
+  int32 x = 1;
+  int32 y = 2;
+}
+
+// -------
+// Request
+// -------
+
+message Request {
+  oneof request {
+    LoginRequest login = 1;
+    FindOpponentRequest find_opponent = 2;
+    PreparePlaygroundRequest prepare_playground =  3;
+    MakeTurnRequest make_turn = 4;
+  }
+}
+
+message LoginRequest {
+  string login = 1;
+}
+
+message FindOpponentRequest {
+}
+
+message PreparePlaygroundRequest {
+  repeated Point points = 1;
+}
+
+message MakeTurnRequest {
+  Point point = 1;
+}
+
+// -------
+// Replies
+// -------
+
+message Reply {
+  string message = 1;
+}
