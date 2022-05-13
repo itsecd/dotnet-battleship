@@ -2,6 +2,8 @@
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        public string Greeting => "Welcome to Avalonia!";
+        public PlaygroundViewModel Edit { get; } = new();
+        public PlaygroundViewModel My { get; } = new();
+        public PlaygroundViewModel Opponent { get; } = new();
     }
 }

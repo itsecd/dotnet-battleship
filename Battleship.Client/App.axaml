@@ -1,12 +1,24 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:v="using:Battleship.Client.Views"
              xmlns:local="using:Battleship.Client"
              x:Class="Battleship.Client.App">
     <Application.DataTemplates>
-        <local:ViewLocator/>
+        <local:ViewLocator />
     </Application.DataTemplates>
 
     <Application.Styles>
-        <FluentTheme Mode="Light"/>
+        <FluentTheme Mode="Light" />
+
+        <Style Selector="v|PlaygroundView Rectangle">
+            <Setter Property="Fill" Value="White"></Setter>
+        </Style>
+
+        <Style Selector="v|PlaygroundView.Edit Rectangle.CellStateNone:pointerover">
+            <Setter Property="Fill" Value="LightSteelBlue" />
+        </Style>
+        <Style Selector="v|PlaygroundView.Edit Rectangle.CellStateUntouched">
+            <Setter Property="Fill" Value="DarkBlue" />
+        </Style>
     </Application.Styles>
 </Application>
