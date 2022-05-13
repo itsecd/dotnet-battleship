@@ -5,6 +5,14 @@ namespace Battleship
 {
     public class Playground<T> where T : ICell, new()
     {
+        public int ExpectedCorvetteCount => 4;
+
+        public int ExpectedDestroyerCount => 3;
+
+        public int ExpectedCruiserCount => 2;
+
+        public int ExpectedBattleshipCount => 1;
+
         public int Width => 10;
 
         public int Height => 10;
