@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battleship.ConsoleClient", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battleship.Server", "Battleship.Server/Battleship.Server.csproj", "{3EB96DE8-9CD3-4EDD-96BA-5414D54B5B03}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battleship.Client", "Battleship.Client\Battleship.Client.csproj", "{671493DE-BED1-45BC-B1DF-7C9D81496971}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battleship", "Battleship\Battleship.csproj", "{62FB8AC8-E46A-4C0C-8734-861361C32766}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,5 +33,13 @@ Global
 		{3EB96DE8-9CD3-4EDD-96BA-5414D54B5B03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3EB96DE8-9CD3-4EDD-96BA-5414D54B5B03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EB96DE8-9CD3-4EDD-96BA-5414D54B5B03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{671493DE-BED1-45BC-B1DF-7C9D81496971}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{671493DE-BED1-45BC-B1DF-7C9D81496971}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{671493DE-BED1-45BC-B1DF-7C9D81496971}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{671493DE-BED1-45BC-B1DF-7C9D81496971}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62FB8AC8-E46A-4C0C-8734-861361C32766}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62FB8AC8-E46A-4C0C-8734-861361C32766}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62FB8AC8-E46A-4C0C-8734-861361C32766}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62FB8AC8-E46A-4C0C-8734-861361C32766}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
