@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Globalization;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Battleship.Api;
 
@@ -10,14 +12,21 @@ namespace Battleship.ConsoleClient
     {
         public static async Task Main(string[] args)
         {
-            var channel = GrpcChannel.ForAddress("http://localhost:5000");
+            using var channel = GrpcChannel.ForAddress("http://localhost:5000");
             var client = new BattleshipService.BattleshipServiceClient(channel);
-            var stream = client.Connect();
+            using var stream = client.Connect();
+
+            var task = Task.Run(async () =>
+            {
+                while (await stream.ResponseStream.MoveNext(CancellationToken.None))
+                {
+                }
+            });
 
             await stream.RequestStream.WriteAsync(CreateLogin("Ivan"));
             await stream.RequestStream.WriteAsync(CreateFindOpponent());
             await stream.RequestStream.CompleteAsync();
-            await Task.Delay(1000);
+            await task;
         }
 
         private static Request CreateLogin(string login)
