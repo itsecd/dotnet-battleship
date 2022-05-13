@@ -11,7 +11,7 @@ namespace Battleship.Server.Services
     {
         public override async Task Connect(
             IAsyncStreamReader<Request> requestStream,
-            IServerStreamWriter<Reply> responseStream,
+            IServerStreamWriter<Event> responseStream,
             ServerCallContext context)
         {
             while (await requestStream.MoveNext())

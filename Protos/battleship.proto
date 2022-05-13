@@ -3,21 +3,21 @@ syntax = "proto3";
 package battleship.api;
 
 service BattleshipService {
-  rpc Connect (stream Request) returns (stream Reply);
+  rpc Connect (stream Request) returns (stream Event);
 }
 
-// ------------
-// Core Message
-// ------------
+// -------------
+// Core Messages
+// -------------
 
 message Point {
   int32 x = 1;
   int32 y = 2;
 }
 
-// -------
-// Request
-// -------
+// --------
+// Requests
+// --------
 
 message Request {
   oneof request {
@@ -43,10 +43,10 @@ message MakeTurnRequest {
   Point point = 1;
 }
 
-// -------
-// Replies
-// -------
+// ------
+// Events
+// ------
 
-message Reply {
+message Event {
   string message = 1;
 }
