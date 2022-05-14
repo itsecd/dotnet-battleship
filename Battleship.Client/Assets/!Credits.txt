@@ -1,4 +1,7 @@
 App.png                       https://icons8.com/icon/KkeasmqMB0mP/aircraft
+Defeat.png                    https://icons8.com/icon/EqRRFOn5budA/skull
+Draw.png                      https://icons8.com/icon/szZDhO4hzAsa/scales
+Error.png                     https://icons8.com/icon/51w77eaukGoV/high-priority
 FogOfWar*.png                 https://icons8.com/icon/LktBoDfNx5kT/fog
 OpponentTurn.png              https://icons8.com/icon/IOC4dtgBlq3q/wait
 Sea*.png                      https://icons8.com/icon/Dilayorg5stz/sea
@@ -6,4 +9,5 @@ ShieldNotDestroyed.png        https://icons8.com/icon/9Kuhqic976qB/protect
 ShieldPartiallyDestroyed.png  https://icons8.com/icon/flPDaHwgNdNn/warning-shield
 ShieldCompletelyDestroyed.png https://icons8.com/icon/LeP0X5clkm0J/delete-shield
 Sword*.png                    https://icons8.com/icon/Vm8G5toRLkr5/cross-swords
+Victory.png                   https://icons8.com/icon/FpiWvq2iHMAc/laurel-wreath
 YourTurn.png                  https://icons8.com/icon/4Qly89zgBwPI/stopwatch
