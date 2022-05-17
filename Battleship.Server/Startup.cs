@@ -1,4 +1,5 @@
 ﻿using Battleship.Server.Services;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +11,7 @@ namespace Battleship.Server
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<GameService>();
             services.AddGrpc();
         }
 
@@ -22,7 +24,7 @@ namespace Battleship.Server
 
             app.UseRouting();
 
-            app.UseEndpoints(endpoints => endpoints.MapGrpcService<BattleshipService>());
+            app.UseEndpoints(endpoints => endpoints.MapGrpcService<EntryPointService>());
         }
     }
 }

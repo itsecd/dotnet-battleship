@@ -48,5 +48,17 @@ message MakeTurnRequest {
 // ------
 
 message Event {
-  string message = 1;
+  oneof event {
+    LoginEvent login = 1;
+    OpponentFound opponent_found = 2;
+  }
+}
+
+message LoginEvent {
+  bool success = 1;
+}
+
+message OpponentFound {
+  string opponent_login = 1;
+  int32 preparation_timeout_seconds = 2;
 }
