@@ -5,6 +5,9 @@ namespace Battleship
 {
     public static class PlaygroundExtensions
     {
+        private const CellState EmptyCell = CellState.None;
+        private const CellState BusyCell = CellState.NotDestroyed;
+
         public static PlaygroundValidationResult Validate(this Playground playground)
         {
             var processed = new HashSet<(int, int)>();
@@ -21,9 +24,9 @@ namespace Battleship
                 // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
                 switch (state)
                 {
-                    case CellState.None:
+                    case EmptyCell:
                         continue;
-                    case CellState.Untouched:
+                    case BusyCell:
                         Track(playground, i, j, processed, validationResult);
                         continue;
                     default:
@@ -44,7 +47,7 @@ namespace Battleship
             var size = 0;
             var di = 0;
             var dj = 0;
-            while (playground[i, j] == CellState.Untouched)
+            while (playground[i, j] == BusyCell)
             {
                 processed.Add((i, j));
                 ++size;
@@ -55,9 +58,9 @@ namespace Battleship
                 if ((di, dj) == (0, 0))
                 {
                     var directionCount = 0;
-                    if (playground[i + 1, j] == CellState.Untouched)
+                    if (playground[i + 1, j] == BusyCell)
                         (di, dj, directionCount) = (+1, 0, directionCount + 1);
-                    if (playground[i, j + 1] == CellState.Untouched)
+                    if (playground[i, j + 1] == BusyCell)
                         (di, dj, directionCount) = (0, +1, directionCount + 1);
 
                     if (directionCount == 0)
@@ -99,10 +102,10 @@ namespace Battleship
         private static bool CheckNeighborhood(Playground playground, int i, int j)
         {
             return
-                playground[i - 1, j - 1] == CellState.None &&
-                playground[i - 1, j + 1] == CellState.None &&
-                playground[i + 1, j - 1] == CellState.None &&
-                playground[i + 1, j + 1] == CellState.None;
+                playground[i - 1, j - 1] == EmptyCell &&
+                playground[i - 1, j + 1] == EmptyCell &&
+                playground[i + 1, j - 1] == EmptyCell &&
+                playground[i + 1, j + 1] == EmptyCell;
         }
     }
 }
