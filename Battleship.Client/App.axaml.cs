@@ -18,9 +18,9 @@ namespace Battleship.Client
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow
+                desktop.MainWindow = new LoginWindow
                 {
-                    DataContext = new MainWindowViewModel(),
+                    DataContext = new LoginViewModel(),
                 };
             }
 

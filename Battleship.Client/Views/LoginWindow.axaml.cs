@@ -4,9 +4,9 @@ using Battleship.Client.ViewModels;
 
 namespace Battleship.Client.Views
 {
-    public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
+    public partial class LoginWindow : ReactiveWindow<LoginViewModel>
     {
-        public MainWindow()
+        public LoginWindow()
         {
             InitializeComponent();
         }
