@@ -9,8 +9,9 @@
         <vm:PlaygroundViewModel />
     </Design.DataContext>
 
-    <Grid Background="Gray">
-        <ItemsControl Items="{Binding Cells}" Margin="1">
+    <Grid Background="LightGray">
+        <ItemsControl Items="{Binding Cells}"
+                      Margin="1">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Spacing="1" />

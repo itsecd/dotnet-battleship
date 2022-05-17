@@ -12,9 +12,9 @@
     </Design.DataContext>
 
     <StackPanel Orientation="Horizontal" Spacing="20" Margin="10">
-        <v:PlaygroundView Classes="Edit" DataContext="{Binding Edit}" />
-        <v:PlaygroundView DataContext="{Binding My}" />
-        <v:PlaygroundView DataContext="{Binding Opponent}" />
+        <v:PlaygroundView Classes="edit-mode" DataContext="{Binding Edit}" />
+        <v:PlaygroundView Classes="my-mode" DataContext="{Binding My}" />
+        <v:PlaygroundView Classes="opponent-mode" DataContext="{Binding Opponent}" />
     </StackPanel>
 
 </Window>

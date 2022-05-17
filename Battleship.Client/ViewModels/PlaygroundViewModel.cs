@@ -1,12 +1,18 @@
+using System;
 using System.Collections.Generic;
+using System.Reactive;
 using System.Threading.Tasks;
 
 using Battleship.Client.Models;
+
+using ReactiveUI;
 
 namespace Battleship.Client.ViewModels
 {
     public class PlaygroundViewModel : ViewModelBase
     {
+        public ReactiveCommand<ICell, Unit> CellClicked { get; }
+
         public IReadOnlyList<IReadOnlyList<ICell>> Cells { get; }
 
         public PlaygroundViewModel() : this(Playground.Create<Cell>())
@@ -24,6 +30,14 @@ namespace Battleship.Client.ViewModels
         public PlaygroundViewModel(Playground playground)
         {
             Cells = playground.Cells;
+
+            CellClicked = ReactiveCommand.CreateFromTask<ICell, Unit>(CellClickedImpl);
+        }
+
+        protected virtual Task<Unit> CellClickedImpl(ICell cell)
+        {
+            Console.WriteLine(cell);
+            return Task.FromResult(Unit.Default);
         }
     }
 }

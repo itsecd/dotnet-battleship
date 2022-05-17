@@ -11,12 +11,12 @@ namespace Battleship.Client.Views
 {
     public partial class CellView : ReactiveUserControl<Cell>
     {
-        // CellStateNone,
-        // CellStateUntouched,
-        // CellStateMiss,
-        // CellStatePartialHit,
-        // CellStateCompleteHit
-        private const string CellStateClassPrefixName = "CellState";
+        // cell-state-none,
+        // cell-state-missed,
+        // cell-state-not-destroyed,
+        // cell-state-partially-destroyed,
+        // cell-state-completely-destroyed
+        private const string CellStateClassPrefixName = "cell-state";
 
         public CellView()
         {
@@ -29,7 +29,7 @@ namespace Battleship.Client.Views
 
         private void OnCellStateChanged(CellState? cellState)
         {
-            var classes = CellRectangle.Classes;
+            var classes = CellImage.Classes;
 
             var oldClassed = classes.Where(o => o.StartsWith(CellStateClassPrefixName));
             classes.RemoveAll(oldClassed);
@@ -37,8 +37,14 @@ namespace Battleship.Client.Views
             if (cellState is null)
                 return;
 
-            var className = CellStateClassPrefixName + cellState.Value;
+            var className = CellStateClassPrefixName + PascalCaseToKebabCase(cellState.Value.ToString());
             classes.Add(className);
+        }
+
+        private static string PascalCaseToKebabCase(string name)
+        {
+            var strings = name.Select(c => char.IsUpper(c) ? "-" + char.ToLower(c) : c.ToString());
+            return string.Concat(strings);
         }
     }
 }

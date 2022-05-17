@@ -1,5 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Battleship.Client.Views.CellView">
-    <Rectangle Name="CellRectangle" Width="32" Height="32" />
+    <Grid Background="White">
+        <Image Name="CellImage" Width="32" Height="32" />
+    </Grid>
 </UserControl>

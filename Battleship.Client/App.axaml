@@ -10,15 +10,49 @@
     <Application.Styles>
         <FluentTheme Mode="Light" />
 
-        <Style Selector="v|PlaygroundView Rectangle">
-            <Setter Property="Fill" Value="White"></Setter>
+        <Style Selector="v|PlaygroundView.edit-mode Image.cell-state-none">
+            <Setter Property="Source" Value="Assets/Sea.png" />
+        </Style>
+        <Style Selector="v|PlaygroundView.edit-mode Image.cell-state-none:pointerover">
+            <Setter Property="Source" Value="Assets/SeaDark.png" />
+        </Style>
+        <Style Selector="v|PlaygroundView.edit-mode Image.cell-state-not-destroyed">
+            <Setter Property="Source" Value="Assets/ShieldNotDestroyed.png" />
         </Style>
 
-        <Style Selector="v|PlaygroundView.Edit Rectangle.CellStateNone:pointerover">
-            <Setter Property="Fill" Value="LightSteelBlue" />
+        <Style Selector="v|PlaygroundView.my-mode Image.cell-state-none">
+            <Setter Property="Source" Value="Assets/SeaDark.png" />
         </Style>
-        <Style Selector="v|PlaygroundView.Edit Rectangle.CellStateUntouched">
-            <Setter Property="Fill" Value="DarkBlue" />
+        <Style Selector="v|PlaygroundView.my-mode Image.cell-state-missed">
+            <Setter Property="Source" Value="Assets/SeaDarkMissed.png" />
+        </Style>
+        <Style Selector="v|PlaygroundView.my-mode Image.cell-state-not-destroyed">
+            <Setter Property="Source" Value="Assets/ShieldNotDestroyed.png" />
+        </Style>
+        <Style Selector="v|PlaygroundView.my-mode Image.cell-state-partially-destroyed">
+            <Setter Property="Source" Value="Assets/ShieldPartiallyDestroyed.png" />
+        </Style>
+        <Style Selector="v|PlaygroundView.my-mode Image.cell-state-completely-destroyed">
+            <Setter Property="Source" Value="Assets/ShieldCompletelyDestroyed.png" />
+        </Style>
+
+        <Style Selector="v|PlaygroundView.opponent-mode Image.cell-state-none">
+            <Setter Property="Source" Value="Assets/FogOfWar.png" />
+        </Style>
+        <Style Selector="v|PlaygroundView.opponent-mode Image.cell-state-none:pointerover">
+            <Setter Property="Source" Value="Assets/FogOfWarDark.png" />
+        </Style>
+        <Style Selector="v|PlaygroundView.opponent-mode Image.cell-state-missed">
+            <Setter Property="Source" Value="Assets/SeaDarkMissed.png" />
+        </Style>
+        <Style Selector="v|PlaygroundView.opponent-mode Image.cell-state-not-destroyed">
+            <Setter Property="Source" Value="Assets/SwordNotDestroyed.png" />
+        </Style>
+        <Style Selector="v|PlaygroundView.opponent-mode Image.cell-state-partially-destroyed">
+            <Setter Property="Source" Value="Assets/SwordPartiallyDestroyed.png" />
+        </Style>
+        <Style Selector="v|PlaygroundView.opponent-mode Image.cell-state-completely-destroyed">
+            <Setter Property="Source" Value="Assets/SwordCompletelyDestroyed.png" />
         </Style>
     </Application.Styles>
 </Application>
