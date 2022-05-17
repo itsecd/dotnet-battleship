@@ -25,6 +25,10 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Protobuf Include="../Protos/battleship.proto" GrpcServices="Client"/>
+    </ItemGroup>
+
+    <ItemGroup>
         <AvaloniaResource Include="Assets/*"/>
     </ItemGroup>
 

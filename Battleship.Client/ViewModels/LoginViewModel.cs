@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
+
+using Battleship.Api;
 
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -22,13 +25,32 @@ namespace Battleship.Client.ViewModels
 
         public LoginViewModel()
         {
-            LoginCommand = ReactiveCommand.CreateFromTask(LoginImpl);
+            var canLogin = this
+                .WhenAnyValue(
+                    o => o.ServerAddress,
+                    o => o.Login,
+                    (serverAddress, login) =>
+                        !string.IsNullOrWhiteSpace(serverAddress) &&
+                        !string.IsNullOrWhiteSpace(login));
+
+            LoginCommand = ReactiveCommand.CreateFromTask(LoginImpl, canLogin);
         }
 
         private async Task<Unit> LoginImpl()
         {
-            Console.WriteLine("LoginImpl: " + Login);
-            return Unit.Default;
+            try
+            {
+                var connection = new Connection($"{ServerAddress}:{ServerPort}");
+                connection.LoginEvent.Subscribe(loginEvent => Console.WriteLine(loginEvent.Success));
+                connection.DisconnectedEvent.Subscribe(unit => Console.WriteLine("Connection failed"));
+                await connection.LoginRequest(Login);
+                return Unit.Default;
+            }
+            catch
+            {
+                Console.WriteLine("Connection failed");
+                return Unit.Default;
+            }
         }
     }
 }
