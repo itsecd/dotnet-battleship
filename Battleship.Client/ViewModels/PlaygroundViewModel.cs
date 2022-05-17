@@ -9,7 +9,7 @@ namespace Battleship.Client.ViewModels
     {
         public IReadOnlyList<IReadOnlyList<ICell>> Cells { get; }
 
-        public PlaygroundViewModel() : this(new Playground<Cell>())
+        public PlaygroundViewModel() : this(Playground.Create<Cell>())
         {
             Task.Run(async () =>
             {
@@ -21,7 +21,7 @@ namespace Battleship.Client.ViewModels
             });
         }
 
-        public PlaygroundViewModel(Playground<Cell> playground)
+        public PlaygroundViewModel(Playground playground)
         {
             Cells = playground.Cells;
         }

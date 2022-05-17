@@ -3,10 +3,9 @@ using System.Collections.Generic;
 
 namespace Battleship
 {
-    public sealed class PlaygroundExtensions
+    public static class PlaygroundExtensions
     {
-        public PlaygroundValidationResult Validate<T>(Playground<T> playground)
-            where T : ICell, new()
+        public static PlaygroundValidationResult Validate(this Playground playground)
         {
             var processed = new HashSet<(int, int)>();
             var validationResult = new PlaygroundValidationResult
@@ -18,7 +17,7 @@ namespace Battleship
             for (var i = 0; i < playground.Height; ++i)
             for (var j = 0; j < playground.Width; ++j)
             {
-                var state = playground.Cells[i][j].State;
+                var state = playground[i, j];
                 // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
                 switch (state)
                 {
@@ -35,17 +34,17 @@ namespace Battleship
             return validationResult;
         }
 
-        private static void Track<T>(
-            Playground<T> playground,
+        private static void Track(
+            Playground playground,
             int i, int j,
-            HashSet<(int, int)> processed,
+            ISet<(int, int)> processed,
             PlaygroundValidationResult validationResult
-        ) where T : ICell, new()
+        )
         {
-            int size = 0;
-            int di = 0;
-            int dj = 0;
-            while (playground.Cells[i][j].State == CellState.Untouched)
+            var size = 0;
+            var di = 0;
+            var dj = 0;
+            while (playground[i, j] == CellState.Untouched)
             {
                 processed.Add((i, j));
                 ++size;
@@ -56,19 +55,19 @@ namespace Battleship
                 if ((di, dj) == (0, 0))
                 {
                     var directionCount = 0;
-                    if (playground.Cells[i + 1][j].State == CellState.Untouched)
+                    if (playground[i + 1, j] == CellState.Untouched)
                         (di, dj, directionCount) = (+1, 0, directionCount + 1);
-                    if (playground.Cells[i][j + 1].State == CellState.Untouched)
+                    if (playground[i, j + 1] == CellState.Untouched)
                         (di, dj, directionCount) = (0, +1, directionCount + 1);
 
                     if (directionCount == 0)
                         break;
 
-                    if (directionCount != 1)
-                    {
-                        validationResult.IsOnlyValidShips = false;
-                        return;
-                    }
+                    if (directionCount == 1)
+                        continue;
+
+                    validationResult.IsOnlyValidShips = false;
+                    return;
                 }
                 else
                 {
@@ -97,13 +96,13 @@ namespace Battleship
             }
         }
 
-        private static bool CheckNeighborhood<T>(Playground<T> playground, int i, int j) where T : ICell, new()
+        private static bool CheckNeighborhood(Playground playground, int i, int j)
         {
             return
-                playground.Cells[i - 1][j - 1].State == CellState.None &&
-                playground.Cells[i - 1][j + 1].State == CellState.None &&
-                playground.Cells[i + 1][j - 1].State == CellState.None &&
-                playground.Cells[i + 1][j + 1].State == CellState.None;
+                playground[i - 1, j - 1] == CellState.None &&
+                playground[i - 1, j + 1] == CellState.None &&
+                playground[i + 1, j - 1] == CellState.None &&
+                playground[i + 1, j + 1] == CellState.None;
         }
     }
 }

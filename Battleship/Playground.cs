@@ -1,10 +1,17 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Runtime.InteropServices;
 
 namespace Battleship
 {
-    public class Playground<T> where T : ICell, new()
+    public class Playground
     {
+        public static Playground Create<T>() where T : ICell, new()
+        {
+            return new Playground(() => new T());
+        }
+
         public int ExpectedCorvetteCount => 4;
 
         public int ExpectedDestroyerCount => 3;
@@ -17,16 +24,29 @@ namespace Battleship
 
         public int Height => 10;
 
-        public IReadOnlyList<IReadOnlyList<T>> Cells { get; }
+        public IReadOnlyList<IReadOnlyList<ICell>> Cells { get; }
 
-        public Playground()
+        public CellState this[int i, int j]
         {
-            var cells = new List<IReadOnlyList<T>>(Height);
+            get
+            {
+                if (i < 0 || Cells.Count <= i)
+                    return CellState.None;
+                if (j < 0 || Cells[i].Count <= j)
+                    return CellState.None;
+                return Cells[i][j].State;
+            }
+            set => Cells[i][j].State = value;
+        }
+
+        private Playground(Func<ICell> cellFactory)
+        {
+            var cells = new List<IReadOnlyList<ICell>>(Height);
             for (var i = 0; i < Height; ++i)
             {
-                var row = new List<T>(Width);
+                var row = new List<ICell>(Width);
                 for (var j = 0; j < Width; ++j)
-                    row.Add(new T());
+                    row.Add(cellFactory());
                 cells.Add(row.ToImmutableArray());
             }
 
