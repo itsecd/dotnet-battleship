@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 
 namespace Battleship.Client.Views
 {
@@ -7,6 +8,11 @@ namespace Battleship.Client.Views
         public MessageWindow()
         {
             InitializeComponent();
+        }
+
+        private void OnCloseClick(object? sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

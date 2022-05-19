@@ -4,6 +4,7 @@
         x:Class="Battleship.Client.Views.MessageWindow"
         CanResize="False"
         SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterOwner"
         Icon="/Assets/App.png"
         Title="Message">
     <DockPanel Margin="10">
@@ -11,6 +12,7 @@
                 Margin="0,10,0,0"
                 HorizontalAlignment="Right"
                 HorizontalContentAlignment="Center"
+                Click="OnCloseClick"
                 Content="OK" />
         <Image DockPanel.Dock="Left"
                Width="32" Height="32"
@@ -20,6 +22,6 @@
                    Margin="10,0,0,0"
                    TextWrapping="Wrap"
                    VerticalAlignment="Center"
-                   Text="Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error Error " />
+                   Text="Error" />
     </DockPanel>
 </Window>
