@@ -1,3 +1,4 @@
+Accept.png                    https://icons8.com/icon/VFaz7MkjAiu0/done
 App.png                       https://icons8.com/icon/KkeasmqMB0mP/aircraft
 Defeat.png                    https://icons8.com/icon/EqRRFOn5budA/skull
 Draw.png                      https://icons8.com/icon/szZDhO4hzAsa/scales
