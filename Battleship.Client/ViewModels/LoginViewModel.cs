@@ -3,8 +3,6 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 
-using Battleship.Api;
-
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -45,11 +43,16 @@ namespace Battleship.Client.ViewModels
             }
             catch
             {
-                Console.WriteLine("Connection failed");
+                await ShowErrorInteraction.Handle("Connection failed.");
                 return Unit.Default;
             }
+
+
             client.LoginEvent.Subscribe(loginEvent => Console.WriteLine(loginEvent.Success));
-            client.DisconnectedEvent.Subscribe(unit => Console.WriteLine("Connection failed"));
+
+            // ReSharper disable once AsyncVoidLambda
+            client.DisconnectedEvent.Subscribe(async _ =>
+                await ShowErrorInteraction.Handle("Connection failed."));
             await client.LoginRequest(Login);
             return Unit.Default;
         }

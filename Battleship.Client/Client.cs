@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,6 +10,8 @@ using Battleship.Api;
 
 using Grpc.Core;
 using Grpc.Net.Client;
+
+using ReactiveUI;
 
 namespace Battleship.Client
 {
@@ -79,14 +82,16 @@ namespace Battleship.Client
 
         private void OnDisconnected()
         {
-            lock (_disconnectedSubject)
+            RxApp.MainThreadScheduler.Schedule(Unit.Default, (scheduler, state) =>
             {
                 if (_alreadyDisconnected)
-                    return;
+                    return Disposable.Empty;
 
                 _disconnectedSubject.OnNext(Unit.Default);
                 _alreadyDisconnected = true;
-            }
+
+                return Disposable.Empty;
+            });
         }
 
         private readonly GrpcChannel _channel;
