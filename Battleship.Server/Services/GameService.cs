@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
@@ -9,6 +10,11 @@ namespace Battleship.Server.Services
 {
     public sealed class GameService
     {
+        public GameService(IMatchmakingService matchmakingService)
+        {
+            _matchmakingService = matchmakingService;
+        }
+
         public async Task Connect(
             IAsyncStreamReader<Request> requestStream,
             IServerStreamWriter<Event> responseStream)
@@ -19,22 +25,43 @@ namespace Battleship.Server.Services
             if (requestStream.Current.RequestCase != Request.RequestOneofCase.Login)
                 return;
 
-            var session = Login(requestStream.Current.Login);
+            var playerSession = Login(requestStream.Current.Login);
             try
             {
-                var loginEvent = new LoginEvent {Success = session is not null};
+                var loginEvent = new LoginEvent {Success = playerSession is not null};
                 await responseStream.WriteAsync(new Event {Login = loginEvent});
-                if (session is null)
+                if (playerSession is null)
                     return;
 
                 while (await requestStream.MoveNext())
                 {
+                    DispatchRequest(playerSession, requestStream.Current);
                 }
             }
             finally
             {
-                if (session is not null)
-                    _players.TryRemove(session.Login, out _);
+                if (playerSession is not null)
+                    _players.TryRemove(playerSession.Login, out _);
+            }
+        }
+
+        private void DispatchRequest(PlayerSession playerSession, Request request)
+        {
+            switch (request.RequestCase)
+            {
+                case Request.RequestOneofCase.None:
+                    throw new InvalidOperationException();
+                case Request.RequestOneofCase.Login:
+                    throw new InvalidOperationException();
+                case Request.RequestOneofCase.FindOpponent:
+                    _matchmakingService.Enqueue(playerSession);
+                    break;
+                case Request.RequestOneofCase.PreparePlayground:
+                    throw new NotImplementedException();
+                case Request.RequestOneofCase.MakeTurn:
+                    throw new NotImplementedException();
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(request));
             }
         }
 
@@ -44,6 +71,7 @@ namespace Battleship.Server.Services
             return _players.TryAdd(session.Login, session) ? session : null;
         }
 
+        private readonly IMatchmakingService _matchmakingService;
         private readonly ConcurrentDictionary<string, PlayerSession> _players = new();
     }
 }
