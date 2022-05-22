@@ -3,13 +3,13 @@ using System.Linq;
 
 using Avalonia.ReactiveUI;
 
-using Battleship.Client.Models;
+using Battleship.Client.ViewModels;
 
 using ReactiveUI;
 
 namespace Battleship.Client.Views
 {
-    public partial class CellView : ReactiveUserControl<Cell>
+    public partial class CellView : ReactiveUserControl<CellViewModel>
     {
         // cell-state-none,
         // cell-state-missed,

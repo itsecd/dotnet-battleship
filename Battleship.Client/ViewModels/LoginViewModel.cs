@@ -38,19 +38,20 @@ namespace Battleship.Client.ViewModels
 
         private async Task<Unit> LoginImpl()
         {
+            Client client;
             try
             {
-                var connection = new Connection($"{ServerAddress}:{ServerPort}");
-                connection.LoginEvent.Subscribe(loginEvent => Console.WriteLine(loginEvent.Success));
-                connection.DisconnectedEvent.Subscribe(unit => Console.WriteLine("Connection failed"));
-                await connection.LoginRequest(Login);
-                return Unit.Default;
+                client = new Client($"{ServerAddress}:{ServerPort}");
             }
             catch
             {
                 Console.WriteLine("Connection failed");
                 return Unit.Default;
             }
+            client.LoginEvent.Subscribe(loginEvent => Console.WriteLine(loginEvent.Success));
+            client.DisconnectedEvent.Subscribe(unit => Console.WriteLine("Connection failed"));
+            await client.LoginRequest(Login);
+            return Unit.Default;
         }
     }
 }

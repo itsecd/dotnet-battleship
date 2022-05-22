@@ -4,6 +4,7 @@
         x:Class="Battleship.Client.Views.LoginWindow"
         CanResize="False"
         SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen"
         Icon="/Assets/App.png"
         Title="Battleship">
     <Design.DataContext>

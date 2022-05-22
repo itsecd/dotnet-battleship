@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Reactive;
 using System.Threading.Tasks;
 
-using Battleship.Client.Models;
-
 using ReactiveUI;
 
 namespace Battleship.Client.ViewModels
@@ -15,7 +13,7 @@ namespace Battleship.Client.ViewModels
 
         public IReadOnlyList<IReadOnlyList<ICell>> Cells { get; }
 
-        public PlaygroundViewModel() : this(Playground.Create<Cell>())
+        public PlaygroundViewModel() : this(Playground.Create<CellViewModel>())
         {
             Task.Run(async () =>
             {

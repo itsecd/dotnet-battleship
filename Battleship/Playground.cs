@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace Battleship
 {
-    public class Playground
+    public sealed class Playground
     {
         public static Playground Create<T>() where T : ICell, new()
         {

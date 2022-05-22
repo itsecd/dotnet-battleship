@@ -12,7 +12,7 @@ using Grpc.Net.Client;
 
 namespace Battleship.Client
 {
-    public sealed class Connection
+    public sealed class Client : IDisposable
     {
         public string Login { get; private set; } = string.Empty;
 
@@ -20,20 +20,32 @@ namespace Battleship.Client
 
         public IObservable<Unit> DisconnectedEvent => _disconnectedSubject;
 
-        public Connection(string address)
+        public Client(string address)
         {
-            var channel = GrpcChannel.ForAddress(address);
-            var client = new BattleshipService.BattleshipServiceClient(channel);
+            _channel = GrpcChannel.ForAddress(address);
+            var client = new BattleshipService.BattleshipServiceClient(_channel);
             _stream = client.Connect();
             Task.Run(ReadEvents);
         }
 
         public async Task LoginRequest(string login)
         {
-            Login = login;
-            var loginRequest = new LoginRequest {Login = login};
-            var request = new Request {Login = loginRequest};
-            await _stream.RequestStream.WriteAsync(request);
+            try
+            {
+                Login = login;
+                var loginRequest = new LoginRequest {Login = login};
+                var request = new Request {Login = loginRequest};
+                await _stream.RequestStream.WriteAsync(request);
+            }
+            catch
+            {
+                OnDisconnected();
+            }
+        }
+
+        public void Dispose()
+        {
+            _channel.Dispose();
         }
 
         private async Task ReadEvents()
@@ -61,12 +73,26 @@ namespace Battleship.Client
             }
             catch
             {
-                _disconnectedSubject.OnNext(Unit.Default);
+                OnDisconnected();
             }
         }
 
+        private void OnDisconnected()
+        {
+            lock (_disconnectedSubject)
+            {
+                if (_alreadyDisconnected)
+                    return;
+
+                _disconnectedSubject.OnNext(Unit.Default);
+                _alreadyDisconnected = true;
+            }
+        }
+
+        private readonly GrpcChannel _channel;
         private readonly AsyncDuplexStreamingCall<Request, Event> _stream;
         private readonly Subject<LoginEvent> _loginSubject = new();
         private readonly Subject<Unit> _disconnectedSubject = new();
+        private bool _alreadyDisconnected;
     }
 }
