@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace Battleship.Client.ViewModels
 {
-    public class LoginViewModel : ViewModelBase
+    public class LoginViewModel : BaseViewModel
     {
         [Reactive]
         public string ServerAddress { get; set; } = "http://127.0.0.1";
@@ -20,6 +21,8 @@ namespace Battleship.Client.ViewModels
         public string Login { get; set; } = string.Empty;
 
         public ReactiveCommand<Unit, Unit> LoginCommand { get; }
+
+        public Interaction<Client, Unit> ShowMatchmakeWindowInteraction { get; } = new();
 
         public LoginViewModel()
         {
@@ -40,6 +43,18 @@ namespace Battleship.Client.ViewModels
             try
             {
                 client = new Client($"{ServerAddress}:{ServerPort}");
+
+                _disposables.Add(client.LoginEvent.Subscribe(async loginEvent =>
+                {
+                    await ShowMatchmakeWindowInteraction.Handle(client);
+                    DisposeSubscriptions();
+                }));
+
+                _disposables.Add(client.DisconnectedEvent.Subscribe(async unit =>
+                {
+                    await ShowErrorInteraction.Handle("Connection failed.");
+                    DisposeSubscriptions();
+                }));
             }
             catch
             {
@@ -47,14 +62,19 @@ namespace Battleship.Client.ViewModels
                 return Unit.Default;
             }
 
-
-            client.LoginEvent.Subscribe(loginEvent => Console.WriteLine(loginEvent.Success));
-
-            // ReSharper disable once AsyncVoidLambda
-            client.DisconnectedEvent.Subscribe(async _ =>
-                await ShowErrorInteraction.Handle("Connection failed."));
             await client.LoginRequest(Login);
+
             return Unit.Default;
         }
+
+        private void DisposeSubscriptions()
+        {
+            foreach (var d in _disposables)
+                d.Dispose();
+
+            _disposables.Clear();
+        }
+
+        private readonly List<IDisposable> _disposables = new();
     }
 }

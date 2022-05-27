@@ -1,7 +1,6 @@
 using System;
-using System.Diagnostics;
 using System.Reactive;
-using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,9 +18,11 @@ namespace Battleship.Client
     {
         public string Login { get; private set; } = string.Empty;
 
-        public IObservable<LoginEvent> LoginEvent => _loginSubject;
+        public IObservable<LoginEvent> LoginEvent => _loginSubject.ObserveOn(RxApp.MainThreadScheduler);
 
-        public IObservable<Unit> DisconnectedEvent => _disconnectedSubject;
+        public IObservable<OpponentFoundEvent> OpponentFoundEvent => _opponentFoundSubject.ObserveOn(RxApp.MainThreadScheduler);
+
+        public IObservable<Unit> DisconnectedEvent => _disconnectedSubject.ObserveOn(RxApp.MainThreadScheduler);
 
         public Client(string address)
         {
@@ -36,8 +37,22 @@ namespace Battleship.Client
             try
             {
                 Login = login;
-                var loginRequest = new LoginRequest {Login = login};
-                var request = new Request {Login = loginRequest};
+                var loginRequest = new LoginRequest { Login = login };
+                var request = new Request { Login = loginRequest };
+                await _stream.RequestStream.WriteAsync(request);
+            }
+            catch
+            {
+                OnDisconnected();
+            }
+        }
+
+        public async Task FindOpponentRequest()
+        {
+            try
+            {
+                var findOpponentRequest = new FindOpponentRequest();
+                var request = new Request { FindOpponent = findOpponentRequest };
                 await _stream.RequestStream.WriteAsync(request);
             }
             catch
@@ -62,13 +77,20 @@ namespace Battleship.Client
                     {
                         case Event.EventOneofCase.None:
                             throw new InvalidOperationException();
+
                         case Event.EventOneofCase.Login:
                             if (!_loginSubject.HasObservers)
-                                Console.WriteLine(stream.Current.Login);
+                                System.Diagnostics.Debug.WriteLine(stream.Current.Login);
                             _loginSubject.OnNext(stream.Current.Login);
                             break;
+
                         case Event.EventOneofCase.OpponentFound:
-                            throw new InvalidOperationException();
+                            System.Diagnostics.Debug.WriteLine(stream.Current.OpponentFound);
+                            if (!_opponentFoundSubject.HasObservers)
+                                System.Diagnostics.Debug.WriteLine(stream.Current.OpponentFound);
+                            _opponentFoundSubject.OnNext(stream.Current.OpponentFound);
+                            break;
+
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
@@ -82,22 +104,21 @@ namespace Battleship.Client
 
         private void OnDisconnected()
         {
-            RxApp.MainThreadScheduler.Schedule(Unit.Default, (scheduler, state) =>
+            lock (_disconnectedSubject)
             {
                 if (_alreadyDisconnected)
-                    return Disposable.Empty;
+                    return;
 
                 _disconnectedSubject.OnNext(Unit.Default);
                 _alreadyDisconnected = true;
-
-                return Disposable.Empty;
-            });
+            }
         }
 
         private readonly GrpcChannel _channel;
         private readonly AsyncDuplexStreamingCall<Request, Event> _stream;
         private readonly Subject<LoginEvent> _loginSubject = new();
         private readonly Subject<Unit> _disconnectedSubject = new();
+        private readonly Subject<OpponentFoundEvent> _opponentFoundSubject = new();
         private bool _alreadyDisconnected;
     }
 }

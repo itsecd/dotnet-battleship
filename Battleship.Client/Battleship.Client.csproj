@@ -10,7 +10,7 @@
         <PackageReference Include="Avalonia.Desktop" Version="0.10.14" />
         <PackageReference Include="Avalonia.Diagnostics" Version="0.10.14" Condition="'$(Configuration)' == 'Debug'" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.14" />
-        <PackageReference Include="Google.Protobuf" Version="3.20.1" />
+        <PackageReference Include="Google.Protobuf" Version="3.21.0" />
         <PackageReference Include="Grpc.Net.Client" Version="2.46.0" />
         <PackageReference Include="Grpc.Tools" Version="2.46.3">
             <PrivateAssets>all</PrivateAssets>

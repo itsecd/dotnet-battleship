@@ -25,11 +25,11 @@ namespace Battleship.Server.Services
             if (requestStream.Current.RequestCase != Request.RequestOneofCase.Login)
                 return;
 
-            var playerSession = Login(requestStream.Current.Login);
+            var playerSession = Login(responseStream, requestStream.Current.Login);
             try
             {
-                var loginEvent = new LoginEvent {Success = playerSession is not null};
-                await responseStream.WriteAsync(new Event {Login = loginEvent});
+                var loginEvent = new LoginEvent { Success = playerSession is not null };
+                await responseStream.WriteAsync(new Event { Login = loginEvent });
                 if (playerSession is null)
                     return;
 
@@ -65,9 +65,9 @@ namespace Battleship.Server.Services
             }
         }
 
-        private PlayerSession? Login(LoginRequest loginRequest)
+        private PlayerSession? Login(IServerStreamWriter<Event> responseStream, LoginRequest loginRequest)
         {
-            var session = new PlayerSession(loginRequest.Login);
+            var session = new PlayerSession(responseStream, loginRequest.Login);
             return _players.TryAdd(session.Login, session) ? session : null;
         }
 

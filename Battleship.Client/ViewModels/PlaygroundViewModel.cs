@@ -7,7 +7,7 @@ using ReactiveUI;
 
 namespace Battleship.Client.ViewModels
 {
-    public class PlaygroundViewModel : ViewModelBase
+    public class PlaygroundViewModel : BaseViewModel
     {
         public ReactiveCommand<ICell, Unit> CellClicked { get; }
 

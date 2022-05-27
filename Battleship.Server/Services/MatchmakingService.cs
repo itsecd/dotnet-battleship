@@ -27,7 +27,7 @@ namespace Battleship.Server.Services
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _timer = new Timer {Interval = _configuration.MatchmakingInterval};
+            _timer = new Timer { Interval = _configuration.MatchmakingInterval * 1000 };
             _timer.Elapsed += TimerOnElapsed;
             _timer.Start();
 
@@ -44,14 +44,16 @@ namespace Battleship.Server.Services
 
         private void TimerOnElapsed(object sender, ElapsedEventArgs e)
         {
-            Console.WriteLine("Tick");
-
             lock (_awaitingPlayers)
             {
                 while (_awaitingPlayers.Count > 1)
                 {
-                    _awaitingPlayers.Dequeue();
-                    _awaitingPlayers.Dequeue();
+                    var firstPlayer = _awaitingPlayers.Dequeue();
+                    var secondPlayer = _awaitingPlayers.Dequeue();
+                    var session = new GameSession(_configuration, firstPlayer, secondPlayer);
+                    session.Start();
+
+                    Console.WriteLine($"Matchmake: {firstPlayer.Login} {secondPlayer.Login}");
                 }
             }
         }

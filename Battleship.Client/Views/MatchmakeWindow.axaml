@@ -1,0 +1,29 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Battleship.Client.ViewModels"
+        x:Class="Battleship.Client.Views.MatchmakeWindow"
+        CanResize="False"
+        Width="400" Height="200"
+        WindowStartupLocation="CenterScreen"
+        Icon="/Assets/App.png"
+        Title="Battleship">
+    <Grid RowDefinitions="*,10,*" ColumnDefinitions="*">
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom">
+            <TextBlock Text="Hi, "/>
+            <TextBlock Text="{Binding Client.Login}"/>
+            <TextBlock Text=""/>
+        </StackPanel>
+        <Carousel Grid.Row="2"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Top"
+                  SelectedIndex="{Binding Mode}">
+            <Button Command="{Binding PlayCommand}" Content="Play"/>
+            <StackPanel Orientation="Horizontal">
+                <Image VerticalAlignment="Center" Source="/Assets/OpponentTurn.png"/>
+                <Label VerticalAlignment="Center" Margin="5,0,0,0" Content="Finding Opponent"/>
+            </StackPanel>
+        </Carousel>
+    </Grid>
+</Window>

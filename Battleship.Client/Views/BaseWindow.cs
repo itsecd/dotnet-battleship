@@ -1,6 +1,4 @@
-using System;
 using System.Reactive;
-using System.Reactive.Disposables;
 using System.Threading.Tasks;
 
 using Avalonia.ReactiveUI;
@@ -11,17 +9,16 @@ using ReactiveUI;
 
 namespace Battleship.Client.Views
 {
-    public class Window<TViewModel> : ReactiveWindow<TViewModel> where TViewModel : class
+    public class BaseWindow<TViewModel> : ReactiveWindow<TViewModel> where TViewModel : class
     {
-        protected Window()
+        protected BaseWindow()
         {
-            this.WhenActivated((CompositeDisposable cd) =>
+            this.WhenActivated(d =>
             {
-                if (ViewModel is not ViewModelBase viewModel)
+                if (ViewModel is not BaseViewModel viewModel)
                     return;
 
-                var d = viewModel.ShowErrorInteraction.RegisterHandler(ShowError);
-                cd.Add(d);
+                d(viewModel.ShowErrorInteraction.RegisterHandler(ShowError));
             });
         }
 
@@ -29,6 +26,14 @@ namespace Battleship.Client.Views
         {
             var messageWindow = new MessageWindow(ctx.Input);
             await messageWindow.ShowDialog(this);
+
+            new LoginWindow
+            {
+                DataContext = new LoginViewModel()
+            }.ShowCenter(this);
+
+            Close();
+
             ctx.SetOutput(Unit.Default);
         }
     }
