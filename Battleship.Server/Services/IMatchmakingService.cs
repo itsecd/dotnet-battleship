@@ -1,5 +1,3 @@
-using Microsoft.Extensions.Hosting;
-
 namespace Battleship.Server.Services
 {
     public interface IMatchmakingService

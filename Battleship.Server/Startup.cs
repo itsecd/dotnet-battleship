@@ -1,5 +1,3 @@
-﻿using System;
-
 using Battleship.Server.Services;
 
 using Microsoft.AspNetCore.Builder;

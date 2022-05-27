@@ -18,21 +18,21 @@ namespace Battleship
             };
 
             for (var i = 0; i < playground.Height; ++i)
-            for (var j = 0; j < playground.Width; ++j)
-            {
-                var state = playground[i, j];
-                // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
-                switch (state)
+                for (var j = 0; j < playground.Width; ++j)
                 {
-                    case EmptyCell:
-                        continue;
-                    case BusyCell:
-                        Track(playground, i, j, processed, validationResult);
-                        continue;
-                    default:
-                        throw new InvalidOperationException();
+                    var state = playground[i, j];
+                    // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+                    switch (state)
+                    {
+                        case EmptyCell:
+                            continue;
+                        case BusyCell:
+                            Track(playground, i, j, processed, validationResult);
+                            continue;
+                        default:
+                            throw new InvalidOperationException();
+                    }
                 }
-            }
 
             return validationResult;
         }
